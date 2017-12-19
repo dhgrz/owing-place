@@ -1,0 +1,39 @@
+package com.itcast.demo03_多线程改进多个客户端上传文件案例;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+public class ClientThread implements Runnable{
+	private String fileName;//1.png,2.png
+	public ClientThread(String fileName){
+		this.fileName = fileName;
+	}
+	public void run() {
+		//连接服务端
+		try {
+			Socket socket = new Socket("127.0.0.1",9888);
+			//网络发送的输出流
+			OutputStream netOut = socket.getOutputStream();
+			//文件的读取流
+			FileInputStream fileIn = new FileInputStream(this.fileName);
+			byte[] byteArray = new byte[1024];
+			int len = 0;
+			while((len = fileIn.read(byteArray)) != -1){
+				netOut.write(byteArray,0,len);
+			}
+			System.out.println(Thread.currentThread().getName() + " 上传文件：" + this.fileName + " 完毕！");
+			fileIn.close();
+			socket.close();
+			
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+}

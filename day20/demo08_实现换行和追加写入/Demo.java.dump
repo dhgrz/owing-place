@@ -1,0 +1,46 @@
+package com.itcast.demo08_实现换行和追加写入;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+/*
+ * 实现换行：
+ * 
+ * 换行符：
+ * Windows操作系统下：\r\n
+ * Linux系统下：\n
+ * Mac系统下：\r
+ * 
+ * 追加写入：由FileOutputStream的构造方法决定的；
+ * 
+ * public FileOutputStream(File file,boolean append)：创建一个向指定 File 对象表示的文件中写入数据的文件输出流。append - 如果为 true，则将字节写入文件末尾处，而不是写入文件开始处 
+ * public FileOutputStream(String name,boolean append):
+
+ */
+public class Demo {
+	public static void main(String[] args) {
+		try {
+			FileOutputStream out = new FileOutputStream("output2.txt");
+			out.write("hellolololololo".getBytes());
+			out.write("\r\n".getBytes());
+			out.write("world".getBytes());
+			out.write("\r\n".getBytes());
+			out.write("java".getBytes());
+			//关闭资源
+			out.close();
+			System.out.println("写入完毕！");
+			
+			//构造一个可追加写入的FileOutputStream
+			FileOutputStream appendOut = new FileOutputStream("output2.txt",true);
+			appendOut.write("aaaaa\r\n".getBytes());
+			appendOut.write("bbbb".getBytes());
+			appendOut.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}

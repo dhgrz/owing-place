@@ -1,0 +1,38 @@
+package com.itcast.demo04_练习_递归列出某目录下某后缀的文件;
+
+import java.io.File;
+
+/*
+ * 递归输出指定目录下所有的java文件的绝对路径案例
+ * 
+ * 思路：
+ * 1.封装初始目录：File对象
+ * 2.获取目录下的所有文件和目录：File[] listFiles()
+ * 3.遍历File[]数组；
+ * 4.判断每个File是否是文件：
+ *    是：判断是否是.java文件，是：打印，否则：下一个循环；
+ *    否：回到2
+ */
+public class Demo {
+	public static void main(String[] args) {
+		//1.封装初始目录
+		File file = new File("D:\\20150118\\day19\\");
+		listFile(file);
+	}
+	public static void listFile(File file){
+		//2.获取目录下所有的文件和目录
+		File[] fileArray = file.listFiles();
+		//注意：如果当前File对象下面没有文件和目录，listFiles()方法返回的是null
+		//3.遍历
+		if(fileArray!= null){
+			for(File f : fileArray){
+				//4.判断是否是文件
+				if(f.isFile() && f.getName().endsWith(".java")){
+					System.out.println(f.getAbsolutePath());
+				}else{//是一个目录,递归调用
+					listFile(f);
+				}
+			}
+		}
+	}
+}
